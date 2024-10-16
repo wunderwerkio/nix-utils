@@ -24,6 +24,9 @@
       utils-sh = import ./nix/scripts/utils-sh.nix {
         inherit pkgs;
       };
+      git-sh = import ./nix/scripts/git-sh.nix {
+        inherit pkgs;
+      };
       print-sh = import ./nix/scripts/print-sh.nix {
         inherit pkgs utils-sh;
       };
@@ -32,7 +35,7 @@
       };
     in {
       packages = {
-        inherit env-sh print-sh utils-sh devenv-sh;
+        inherit env-sh utils-sh git-sh print-sh devenv-sh;
       };
 
       formatter = pkgs.alejandra;
