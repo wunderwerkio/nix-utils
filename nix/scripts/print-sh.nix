@@ -292,28 +292,28 @@ pkgs.writeShellScript "print.sh" ''
 
     # Handle CI.
     if [[ ! -z "$CI" ]]; then
-      printf "#####"
+      printf "#####\n"
 
       if [ "$type" = "error" ]; then
-        printf "# \e[31m$title\e[0m"
+        printf "# \e[31m$title\e[0m\n"
       elif [ "$type" = "warning" ]; then
-        printf "# \e[33m$title\e[0m"
+        printf "# \e[33m$title\e[0m\n"
       elif [ "$type" = "success" ]; then
-        printf "# \e[32m$title\e[0m"
+        printf "# \e[32m$title\e[0m\n"
       else
-        printf "# \e[36m$title\e[0m"
+        printf "# \e[36m$title\e[0m\n"
       fi
 
-      printf "#"
+      printf "#\n"
 
       IFS=:
       for line in "''${lines[@]}"; do
         IFS=$old_ifs
 
-        printf "# $line"
+        printf "# $line\n"
       done
 
-      printf "#####"
+      printf "#####\n"
 
       # Exit here.
       return 0
