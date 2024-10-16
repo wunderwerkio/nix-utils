@@ -1,5 +1,27 @@
 {pkgs, ...}:
 pkgs.writeShellScript "env.sh" ''
+  # Get env var with default value if empty.
+  #
+  # @Arguments
+  #   <var_name> Name of env var to load.
+  #   <default>  Default value if env var is empty.
+  #
+  # @Returns
+  #   Echoes the env value or default.
+  function get_env_default() {
+    name="$1"
+    default="$2"
+
+    # Load env var with dynamic name from variable.
+    # See: https://stackoverflow.com/a/18124325
+    value=''${!name}
+    if [ -z "$value" ]; then
+      value="$default"
+    fi
+
+    echo "$value"
+  }
+
   # Load .env files.
   #
   # Loads given .env files into the current
