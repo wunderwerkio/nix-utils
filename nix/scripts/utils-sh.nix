@@ -1,5 +1,14 @@
 {pkgs, ...}:
 pkgs.writeShellScript "utils.sh" ''
+  # Check if command exists.
+  #
+  # @Arguments
+  #   <command>   Command to check for
+  function command_exists() {
+    which "$1" 2>/dev/null >/dev/null
+    return $?
+  }
+
   # Get length of passed in string.
   #
   # This correctly counts the number of characters
