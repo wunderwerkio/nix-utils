@@ -292,6 +292,7 @@ pkgs.writeShellScript "print.sh" ''
 
     # Handle CI.
     if [[ ! -z "$CI" ]]; then
+      printf "\n"
       printf "#####\n"
 
       if [ "$type" = "error" ]; then
@@ -314,6 +315,7 @@ pkgs.writeShellScript "print.sh" ''
       done
 
       printf "#####\n"
+      printf "\n"
 
       # Exit here.
       return 0
