@@ -290,6 +290,35 @@ pkgs.writeShellScript "print.sh" ''
       esac
     done
 
+    # Handle CI.
+    if [[ ! -z "$CI" ]]; then
+      printf "#####"
+
+      if [ "$type" = "error" ]; then
+        printf "# \e[31m$title\e[0m"
+      elif [ "$type" = "warning" ]; then
+        printf "# \e[33m$title\e[0m"
+      elif [ "$type" = "success" ]; then
+        printf "# \e[32m$title\e[0m"
+      else
+        printf "# \e[36m$title\e[0m"
+      fi
+
+      printf "#"
+
+      IFS=:
+      for line in "''${lines[@]}"; do
+        IFS=$old_ifs
+
+        printf "# $line"
+      done
+
+      printf "#####"
+
+      # Exit here.
+      return 0
+    fi
+
     local cols
     cols=$(tput cols)
     if [ "$cols" -gt $max_width ]; then
