@@ -205,19 +205,19 @@ pkgs.writeShellScript "print.sh" ''
       new_len=$((counter + word_len))
 
       if [ $new_len -le $eff_len ]; then
-        printf "$word "
+        echo -n "$word "
         counter=$new_len
       else
         local diff
         diff=$((eff_len - counter))
 
         for i in $(seq 1 $diff); do
-          printf " "
+          echo -n " "
         done
 
         printf "$insert_after\n"
         printf "$insert_before"
-        printf "$word "
+        echo -n "$word "
 
         counter=$word_len
 
