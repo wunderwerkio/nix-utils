@@ -357,6 +357,7 @@ pkgs.writeShellScript "devenv.sh" ''
     local devenv_file
     cwd=$(pwd)
     devenv_file="devenv.json"
+    setup_cmd="setup"
 
     while [[ $# -gt 0 ]]; do
       case $1 in
@@ -366,6 +367,10 @@ pkgs.writeShellScript "devenv.sh" ''
           ;;
         --devenv-file=*)
           devenv_file=$(echo "$1" | cut -c 15-)
+          shift
+          ;;
+        --setup-cmd=*)
+          setup_cmd=$(echo "$1" | cut -c 13-)
           shift
           ;;
         *)
@@ -381,7 +386,7 @@ pkgs.writeShellScript "devenv.sh" ''
         --title="No env files found!" \
         "Neither a .env nor a .env.local file could be found in project root folder." \
         "" \
-        "\e[36mPlease type \`setup\` to start the setup wizard."
+        "\e[36mPlease type \`$setup_cmd\` to start the setup wizard."
       echo
     fi
 
@@ -446,10 +451,12 @@ pkgs.writeShellScript "devenv.sh" ''
     local title
     local cwd
     local devenv_file
+    local setup_cmd
 
     title=""
     cwd=$(pwd)
     devenv_file="devenv.json"
+    setup_cmd="setup"
 
     while [[ $# -gt 0 ]]; do
       case $1 in
@@ -465,6 +472,10 @@ pkgs.writeShellScript "devenv.sh" ''
           devenv_file=$(echo "$1" | cut -c 15-)
           shift
           ;;
+        --setup-cmd=*)
+          setup_cmd=$(echo "$1" | cut -c 13-)
+          shift
+          ;;
         *)
           shift
           ;;
@@ -473,7 +484,7 @@ pkgs.writeShellScript "devenv.sh" ''
 
     print_figlet "$title" --prefix="\e[1;32m  "
 
-    check_requirements --cwd="$cwd" --devenv-file="$devenv_file" >/dev/null
+    check_requirements --cwd="$cwd" --devenv-file="$devenv_file" --setup-cmd="$setup_cmd" >/dev/null
 
     if [ $? -ne 0 ]; then
       echo
@@ -483,7 +494,7 @@ pkgs.writeShellScript "devenv.sh" ''
         --title="Devenv not functional" \
         "The development environment is not yet fully functional." \
         "" \
-        "\e[36mPlease type \`setup\` to start the setup wizard to add missing requirements."
+        "\e[36mPlease type \`$setup_cmd\` to start the setup wizard to add missing requirements."
 
       return 1
     fi
